@@ -1,27 +1,20 @@
-//Servidor
-const express = require('express')
-//const { static } = require('express')
-const server = express()
+const express = require('express');
+const server = express();
 
-const {
-    pageLanding,
-    pageStudy,
-    pageGiveClasses
-} = require('./page')
+const { pageLanding, pageStudy, pageGiveClasses, saveClasses } = require('./page')
 
-//configurar nunjucks
-const nunjucks = require('nunjucks')
+const nunjucks = require('nunjucks');
 nunjucks.configure('src/views', {
-    express: server,
-    noCache: true,
+  express: server,
+  noCache: true,
 })
 
 server
-//configurar arquivos estaticos (css,scripts,imagens)
+.use(express.urlencoded({ extended: true }))
 .use(express.static("public"))
-//rotas da aplicação
 .get("/", pageLanding)
 .get("/study", pageStudy)
 .get("/give-classes", pageGiveClasses)
+.post("/save-classes", saveClasses)
 
-.listen(5500)
+.listen(5500);
